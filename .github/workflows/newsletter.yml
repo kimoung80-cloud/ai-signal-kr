@@ -1,0 +1,38 @@
+name: AI Signal KR Daily Newsletter
+
+on:
+  schedule:
+    - cron: '0 21 * * *'  # 매일 UTC 21:00 = 한국시간 06:00
+  workflow_dispatch:       # 수동 실행 버튼
+
+jobs:
+  send-newsletter:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 코드 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Python 설치
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 패키지 설치
+        run: pip install feedparser requests anthropic google-auth google-auth-httplib2 google-api-python-client
+
+      - name: 뉴스 수집
+        run: python collect.py
+
+      - name: AI 요약 생성
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python summarize.py
+
+      - name: 뉴스레터 발송
+        env:
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
+        run: python send_newsletter.py
