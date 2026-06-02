@@ -1,0 +1,1565 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>AI Signal KR — 매일 아침 AI 빅테크 인사이트</title>
+<meta name="description" content="오픈AI, 메타, 구글, 엔비디아 CEO들의 X·유튜브·기사를 매일 한국어로. 정보의 격차를 좁히는 AI 뉴스레터.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   RESET & BASE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+  --bg:        #07090f;
+  --surface:   #0e1118;
+  --surface2:  #161c28;
+  --surface3:  #1d2435;
+  --accent:    #00d4ff;
+  --accent2:   #7c3aed;
+  --accent3:   #f97316;
+  --green:     #22c55e;
+  --text:      #eef0f6;
+  --text-sub:  #8b93a8;
+  --text-dim:  #505870;
+  --border:    rgba(255,255,255,0.07);
+  --border2:   rgba(255,255,255,0.12);
+  --glow-b:    0 0 48px rgba(0,212,255,0.12);
+  --glow-p:    0 0 48px rgba(124,58,237,0.15);
+  --r-sm:      10px;
+  --r-md:      16px;
+  --r-lg:      20px;
+  --r-xl:      28px;
+
+  /* 타이포그래피 스케일 — 모바일 우선 */
+  --fs-xs:    11px;
+  --fs-sm:    13px;
+  --fs-base:  15px;
+  --fs-md:    17px;
+  --fs-lg:    22px;
+  --fs-xl:    28px;
+  --fs-2xl:   36px;
+  --fs-3xl:   48px;
+
+  /* 줄간격 */
+  --lh-tight:  1.25;
+  --lh-base:   1.65;
+  --lh-loose:  1.85;
+
+  /* 자간 */
+  --ls-tight:  -0.03em;
+  --ls-base:   -0.01em;
+  --ls-wide:   0.06em;
+  --ls-wider:  0.12em;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: var(--fs-base);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  word-break: keep-all;
+  word-wrap: break-word;
+}
+
+/* 배경 노이즈 그리드 */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,212,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,0.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   LAYOUT UTILS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.wrap {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.wrap--wide {
+  max-width: 680px;
+}
+
+section {
+  position: relative;
+  z-index: 1;
+}
+
+.divider {
+  width: calc(100% - 40px);
+  max-width: 440px;
+  height: 1px;
+  background: var(--border);
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   NAV
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  padding: 0 20px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(7,9,15,0.88);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav__logo {
+  font-family: 'Space Mono', monospace;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+}
+
+.nav__logo em {
+  color: var(--text-dim);
+  font-style: normal;
+}
+
+.nav__pill {
+  font-family: 'Space Mono', monospace;
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-wider);
+  color: var(--green);
+  background: rgba(34,197,94,0.1);
+  border: 1px solid rgba(34,197,94,0.25);
+  padding: 5px 11px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.live-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: blink 1.4s infinite;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   HERO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.hero {
+  padding: 100px 0 56px;
+  text-align: center;
+}
+
+.hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Space Mono', monospace;
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-wider);
+  color: var(--accent);
+  text-transform: uppercase;
+  background: rgba(0,212,255,0.07);
+  border: 1px solid rgba(0,212,255,0.2);
+  padding: 6px 14px;
+  border-radius: 20px;
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: fadeUp .5s .1s forwards;
+}
+
+.hero__h1 {
+  font-size: var(--fs-2xl);
+  font-weight: 900;
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+  margin-bottom: 20px;
+  opacity: 0;
+  animation: fadeUp .5s .25s forwards;
+}
+
+.hero__h1 .accent-gradient {
+  background: linear-gradient(90deg, var(--accent), var(--accent2) 60%, var(--accent));
+  background-size: 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 4s infinite linear;
+}
+
+.hero__desc {
+  font-size: var(--fs-md);
+  line-height: var(--lh-loose);
+  color: var(--text-sub);
+  margin-bottom: 32px;
+  opacity: 0;
+  animation: fadeUp .5s .4s forwards;
+}
+
+.hero__desc strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* CEO 태그 */
+.ceo-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 36px;
+  opacity: 0;
+  animation: fadeUp .5s .5s forwards;
+}
+
+.ceo-tag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--fs-xs);
+  font-family: 'Space Mono', monospace;
+  color: var(--text-sub);
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  padding: 6px 12px;
+  border-radius: 20px;
+}
+
+.ceo-tag__dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: blink 2s infinite;
+}
+
+/* 구독 폼 */
+.subscribe-wrap {
+  opacity: 0;
+  animation: fadeUp .5s .6s forwards;
+}
+
+.subscribe-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.subscribe-form__input {
+  width: 100%;
+  background: var(--surface2);
+  border: 1.5px solid var(--border2);
+  border-radius: var(--r-md);
+  padding: 16px 18px;
+  font-size: var(--fs-md);
+  color: var(--text);
+  font-family: 'Noto Sans KR', sans-serif;
+  outline: none;
+  transition: border-color .2s;
+  -webkit-appearance: none;
+}
+
+.subscribe-form__input:focus {
+  border-color: rgba(0,212,255,0.5);
+  box-shadow: 0 0 0 3px rgba(0,212,255,0.08);
+}
+
+.subscribe-form__input::placeholder {
+  color: var(--text-dim);
+}
+
+.subscribe-form__btn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border: none;
+  border-radius: var(--r-md);
+  padding: 17px 24px;
+  font-size: var(--fs-md);
+  font-weight: 700;
+  color: #fff;
+  font-family: 'Noto Sans KR', sans-serif;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  transition: opacity .2s, transform .1s;
+  -webkit-appearance: none;
+}
+
+.subscribe-form__btn:active {
+  transform: scale(0.98);
+  opacity: 0.9;
+}
+
+.subscribe-fine {
+  margin-top: 12px;
+  font-size: var(--fs-sm);
+  color: var(--text-dim);
+  line-height: var(--lh-base);
+  text-align: center;
+}
+
+.subscribe-success {
+  display: none;
+  background: rgba(34,197,94,0.08);
+  border: 1px solid rgba(34,197,94,0.25);
+  border-radius: var(--r-md);
+  padding: 20px;
+  text-align: center;
+  color: var(--green);
+  font-size: var(--fs-base);
+  line-height: var(--lh-base);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   STATS ROW
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.stats {
+  padding: 40px 0;
+}
+
+.stats__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+
+.stats__item {
+  padding: 22px 16px;
+  text-align: center;
+  border-right: 1px solid var(--border);
+}
+
+.stats__item:last-child {
+  border-right: none;
+}
+
+.stats__num {
+  font-family: 'Space Mono', monospace;
+  font-size: var(--fs-xl);
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 6px;
+  letter-spacing: -0.03em;
+}
+
+.stats__label {
+  font-size: var(--fs-xs);
+  color: var(--text-dim);
+  line-height: var(--lh-base);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SECTION HEADER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.section-header {
+  padding: 56px 0 36px;
+}
+
+.section-header__label {
+  display: inline-block;
+  font-family: 'Space Mono', monospace;
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-wider);
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.section-header__title {
+  font-size: var(--fs-xl);
+  font-weight: 800;
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+  margin-bottom: 14px;
+}
+
+.section-header__desc {
+  font-size: var(--fs-base);
+  color: var(--text-sub);
+  line-height: var(--lh-loose);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SAMPLE CARDS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.samples {
+  padding-bottom: 56px;
+}
+
+.sample-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  margin-bottom: 16px;
+  transition: transform .2s, border-color .2s;
+}
+
+.sample-card:active {
+  transform: scale(0.99);
+}
+
+/* 카드 헤더 — X 트윗 스타일 */
+.card-header {
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.card-header__top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Space Mono', monospace;
+  font-size: 15px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.avatar--s { background: linear-gradient(135deg, #0ea5e9, #7c3aed); color: #fff; }
+.avatar--n { background: linear-gradient(135deg, #22c55e, #15803d); color: #fff; }
+.avatar--m { background: linear-gradient(135deg, #a855f7, #581c87); color: #fff; }
+.avatar--d { background: linear-gradient(135deg, #f97316, #c2410c); color: #fff; }
+
+.avatar__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.avatar__name {
+  font-size: var(--fs-base);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: var(--ls-base);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.avatar__handle {
+  font-size: var(--fs-sm);
+  color: var(--text-sub);
+  font-family: 'Space Mono', monospace;
+  letter-spacing: 0;
+}
+
+.card-platform {
+  font-family: 'Space Mono', monospace;
+  font-size: var(--fs-xs);
+  color: var(--text-dim);
+  background: var(--surface3);
+  border: 1px solid var(--border);
+  padding: 4px 9px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.card-quote {
+  font-size: var(--fs-md);
+  font-weight: 500;
+  line-height: var(--lh-loose);
+  letter-spacing: var(--ls-base);
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.card-quote-en {
+  font-size: var(--fs-sm);
+  color: var(--text-sub);
+  font-style: italic;
+  line-height: var(--lh-base);
+  padding: 10px 14px;
+  background: var(--surface2);
+  border-left: 2px solid var(--border2);
+  border-radius: 0 6px 6px 0;
+  margin-bottom: 14px;
+}
+
+.card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.card-meta__time {
+  font-family: 'Space Mono', monospace;
+  font-size: var(--fs-xs);
+  color: var(--text-dim);
+}
+
+.card-meta__source {
+  font-size: var(--fs-xs);
+  color: var(--text-dim);
+  opacity: 0.55;
+}
+
+/* 카드 바디 */
+.card-body {
+  padding: 18px 20px;
+}
+
+.card-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.tag {
+  font-size: var(--fs-xs);
+  font-family: 'Space Mono', monospace;
+  padding: 4px 9px;
+  border-radius: 5px;
+  background: rgba(0,212,255,0.07);
+  color: var(--accent);
+  border: 1px solid rgba(0,212,255,0.15);
+  letter-spacing: 0.02em;
+}
+
+.card-title {
+  font-size: var(--fs-md);
+  font-weight: 700;
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+  margin-bottom: 10px;
+  color: var(--text);
+}
+
+.card-summary {
+  font-size: var(--fs-sm);
+  color: var(--text-sub);
+  line-height: var(--lh-loose);
+  letter-spacing: var(--ls-base);
+}
+
+.card-footer {
+  padding: 0 20px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-read-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--fs-sm);
+  color: var(--accent);
+  font-family: 'Space Mono', monospace;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+}
+
+.card-free-badge {
+  font-family: 'Space Mono', monospace;
+  font-size: var(--fs-xs);
+  color: var(--green);
+  background: rgba(34,197,94,0.08);
+  border: 1px solid rgba(34,197,94,0.2);
+  padding: 4px 9px;
+  border-radius: 5px;
+}
+
+.card-lock-badge {
+  font-family: 'Space Mono', monospace;
+  font-size: var(--fs-xs);
+  color: var(--accent3);
+  background: rgba(249,115,22,0.08);
+  border: 1px solid rgba(249,115,22,0.2);
+  padding: 4px 9px;
+  border-radius: 5px;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   PLAN CARDS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.plans {
+  padding-bottom: 60px;
+}
+
+.plan-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: 28px 24px;
+  margin-bottom: 14px;
+  position: relative;
+  overflow: hidden;
+}
+
+.plan-card--featured {
+  border-color: rgba(0,212,255,0.35);
+  background: linear-gradient(160deg, rgba(0,212,255,0.04) 0%, rgba(124,58,237,0.04) 100%);
+  box-shadow: var(--glow-b);
+}
+
+.plan-card--annual {
+  border-color: rgba(249,115,22,0.35);
+  background: linear-gradient(160deg, rgba(249,115,22,0.04) 0%, rgba(234,88,12,0.02) 100%);
+}
+
+.plan-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: 'Space Mono', monospace;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: var(--ls-wide);
+  padding: 5px 12px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
+
+.plan-badge--free {
+  color: var(--green);
+  background: rgba(34,197,94,0.1);
+  border: 1px solid rgba(34,197,94,0.25);
+}
+
+.plan-badge--monthly {
+  color: var(--accent);
+  background: rgba(0,212,255,0.1);
+  border: 1px solid rgba(0,212,255,0.25);
+}
+
+.plan-badge--annual {
+  color: var(--accent3);
+  background: rgba(249,115,22,0.1);
+  border: 1px solid rgba(249,115,22,0.25);
+}
+
+.plan-name {
+  font-size: var(--fs-lg);
+  font-weight: 800;
+  letter-spacing: var(--ls-tight);
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
+
+.plan-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.plan-price {
+  font-family: 'Space Mono', monospace;
+  font-size: var(--fs-3xl);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.plan-price--free { color: var(--green); }
+.plan-price--monthly { color: var(--accent); }
+.plan-price--annual { color: var(--accent3); }
+
+.plan-price-unit {
+  font-size: var(--fs-base);
+  color: var(--text-sub);
+  font-weight: 400;
+}
+
+.plan-price-note {
+  font-size: var(--fs-sm);
+  color: var(--text-sub);
+  line-height: var(--lh-base);
+  margin-bottom: 20px;
+}
+
+.plan-price-note strong {
+  color: var(--accent3);
+  font-weight: 600;
+}
+
+.plan-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 20px 0;
+}
+
+.plan-features {
+  list-style: none;
+  margin-bottom: 24px;
+}
+
+.plan-features li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: var(--fs-base);
+  line-height: var(--lh-base);
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border);
+  letter-spacing: var(--ls-base);
+}
+
+.plan-features li:last-child {
+  border-bottom: none;
+}
+
+.plan-features li.on {
+  color: var(--text);
+}
+
+.plan-features li.off {
+  color: var(--text-dim);
+}
+
+.feat-icon {
+  font-size: 15px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.plan-btn {
+  display: block;
+  width: 100%;
+  padding: 17px 24px;
+  border-radius: var(--r-md);
+  font-size: var(--fs-md);
+  font-weight: 700;
+  font-family: 'Noto Sans KR', sans-serif;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  border: none;
+  transition: opacity .2s, transform .1s;
+  -webkit-appearance: none;
+}
+
+.plan-btn:active {
+  transform: scale(0.98);
+}
+
+.plan-btn--free {
+  background: var(--surface3);
+  color: var(--text);
+  border: 1.5px solid var(--border2);
+}
+
+.plan-btn--monthly {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff;
+}
+
+.plan-btn--annual {
+  background: linear-gradient(135deg, var(--accent3), #dc2626);
+  color: #fff;
+}
+
+/* 연간 절약 리본 */
+.save-ribbon {
+  position: absolute;
+  top: 18px;
+  right: -28px;
+  background: var(--accent3);
+  color: #fff;
+  font-family: 'Space Mono', monospace;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  padding: 5px 36px;
+  transform: rotate(45deg);
+  letter-spacing: var(--ls-wide);
+  pointer-events: none;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   FEATURES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.features {
+  padding-bottom: 56px;
+}
+
+.feature-item {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.feature-item:last-child {
+  border-bottom: none;
+}
+
+.feature-icon {
+  font-size: 26px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  width: 40px;
+  text-align: center;
+}
+
+.feature-text {}
+
+.feature-title {
+  font-size: var(--fs-md);
+  font-weight: 700;
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+  margin-bottom: 7px;
+}
+
+.feature-desc {
+  font-size: var(--fs-sm);
+  color: var(--text-sub);
+  line-height: var(--lh-loose);
+  letter-spacing: var(--ls-base);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   CHANNEL B SECTION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.channel-b {
+  background: var(--surface);
+  border: 1px solid rgba(249,115,22,0.2);
+  border-radius: var(--r-xl);
+  padding: 28px 24px;
+  margin-bottom: 60px;
+}
+
+.channel-b__flag {
+  font-size: 32px;
+  margin-bottom: 14px;
+  display: block;
+}
+
+.channel-b__title {
+  font-size: var(--fs-lg);
+  font-weight: 800;
+  letter-spacing: var(--ls-tight);
+  margin-bottom: 10px;
+}
+
+.channel-b__desc {
+  font-size: var(--fs-sm);
+  color: var(--text-sub);
+  line-height: var(--lh-loose);
+  margin-bottom: 20px;
+}
+
+.channel-b__btn {
+  display: block;
+  width: 100%;
+  padding: 15px 24px;
+  border-radius: var(--r-md);
+  font-size: var(--fs-base);
+  font-weight: 700;
+  font-family: 'Noto Sans KR', sans-serif;
+  cursor: pointer;
+  background: transparent;
+  border: 1.5px solid rgba(249,115,22,0.5);
+  color: var(--accent3);
+  transition: background .2s;
+  -webkit-appearance: none;
+}
+
+.channel-b__btn:active {
+  background: rgba(249,115,22,0.08);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   CTA BOTTOM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.cta-bottom {
+  padding: 56px 0 80px;
+  text-align: center;
+}
+
+.cta-bottom__title {
+  font-size: var(--fs-xl);
+  font-weight: 900;
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+  margin-bottom: 14px;
+}
+
+.cta-bottom__desc {
+  font-size: var(--fs-base);
+  color: var(--text-sub);
+  line-height: var(--lh-loose);
+  margin-bottom: 32px;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   FOOTER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.footer {
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid var(--border);
+  padding: 32px 20px 48px;
+  text-align: center;
+}
+
+.footer__logo {
+  font-family: 'Space Mono', monospace;
+  font-size: var(--fs-sm);
+  color: var(--text-dim);
+  margin-bottom: 14px;
+}
+
+.footer__links {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.footer__links a {
+  font-size: var(--fs-xs);
+  color: var(--text-dim);
+  text-decoration: none;
+}
+
+.footer__copy {
+  font-size: var(--fs-xs);
+  color: var(--text-dim);
+  opacity: 0.4;
+  line-height: var(--lh-base);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   TOAST
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--surface2);
+  border: 1px solid rgba(0,212,255,0.25);
+  color: var(--text);
+  padding: 13px 22px;
+  border-radius: 12px;
+  font-size: var(--fs-sm);
+  box-shadow: var(--glow-b);
+  z-index: 999;
+  transition: transform .28s cubic-bezier(.34,1.56,.64,1);
+  white-space: nowrap;
+  max-width: calc(100vw - 40px);
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ANIMATIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+
+@keyframes shimmer {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   DESKTOP TWEAKS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@media (min-width: 600px) {
+  :root {
+    --fs-xl: 32px;
+    --fs-2xl: 44px;
+    --fs-3xl: 56px;
+  }
+
+  .subscribe-form {
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .subscribe-form__btn {
+    width: auto;
+    flex-shrink: 0;
+    padding: 17px 28px;
+    white-space: nowrap;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav__logo">AI<em>/</em>SIGNAL<em>·KR</em></div>
+  <div class="nav__pill">
+    <span class="live-dot"></span>
+    DAILY
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero__eyebrow">
+      <span class="live-dot"></span>
+      매일 오전 8시 · AI 빅테크 인사이트
+    </div>
+
+    <h1 class="hero__h1">
+      오늘 CEO들이<br>
+      <span class="accent-gradient">뭐라 했는지</span><br>
+      알고 계세요?
+    </h1>
+
+    <p class="hero__desc">
+      샘 알트만, 젠슨 황, 순다르 피차이…<br>
+      <strong>X · 유튜브 · 빅테크 기사</strong>를<br>
+      매일 아침 <strong>한국어</strong>로 정리해드려요.
+    </p>
+
+    <div class="ceo-tags">
+      <div class="ceo-tag"><span class="ceo-tag__dot"></span>@sama</div>
+      <div class="ceo-tag"><span class="ceo-tag__dot"></span>Jensen Huang</div>
+      <div class="ceo-tag"><span class="ceo-tag__dot"></span>Sundar Pichai</div>
+      <div class="ceo-tag"><span class="ceo-tag__dot"></span>@zuck</div>
+      <div class="ceo-tag"><span class="ceo-tag__dot"></span>Dario Amodei</div>
+    </div>
+
+    <div class="subscribe-wrap">
+      <div class="subscribe-form" id="heroForm">
+        <input
+          class="subscribe-form__input"
+          type="email"
+          id="heroEmail"
+          placeholder="이메일 주소 입력"
+          inputmode="email"
+          autocomplete="email"
+        >
+        <button class="subscribe-form__btn" onclick="subscribe('hero')">
+          무료로 시작 →
+        </button>
+      </div>
+      <div class="subscribe-success" id="heroSuccess">
+        ✅ 구독 완료!<br>
+        다음 발행일에 첫 번째 뉴스레터가 도착해요.
+      </div>
+      <p class="subscribe-fine">무료 구독 · 스팸 없음 · 언제든 해지 가능</p>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats">
+  <div class="wrap">
+    <div class="stats__grid">
+      <div class="stats__item">
+        <div class="stats__num" id="statSub">847명</div>
+        <div class="stats__label">누적<br>구독자</div>
+      </div>
+      <div class="stats__item">
+        <div class="stats__num">42%</div>
+        <div class="stats__label">평균<br>오픈율</div>
+      </div>
+      <div class="stats__item">
+        <div class="stats__num">무료</div>
+        <div class="stats__label">기본<br>플랜</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SAMPLE CARDS -->
+<section class="samples">
+  <div class="wrap">
+    <div class="section-header">
+      <span class="section-header__label">오늘의 뉴스레터 미리보기</span>
+      <h2 class="section-header__title">이런 내용이<br>매일 도착해요</h2>
+      <p class="section-header__desc">
+        X 트윗, 유튜브 발언, 빅테크 기사를<br>
+        실제처럼 번역 · 큐레이션합니다.
+      </p>
+    </div>
+
+    <!-- 카드 1 — X 트윗 -->
+    <div class="sample-card">
+      <div class="card-header">
+        <div class="card-header__top">
+          <div class="avatar avatar--s">S</div>
+          <div class="avatar__info">
+            <div class="avatar__name">Sam Altman</div>
+            <div class="avatar__handle">@sama · CEO, OpenAI</div>
+          </div>
+          <div class="card-platform">𝕏 POST</div>
+        </div>
+        <div class="card-quote">
+          "GPT-5는 지금까지 우리가 만든 것 중 가장 강력합니다.
+          하지만 이건 시작일 뿐이에요."
+        </div>
+        <div class="card-quote-en">
+          "GPT-5 is the most capable model we've ever built.
+          But this is just the beginning."
+        </div>
+        <div class="card-meta">
+          <span class="card-meta__time">2026.05.08 · 03:24 KST</span>
+          <span class="card-meta__source">출처 x.com/sama</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-tags">
+          <span class="tag">#OpenAI</span>
+          <span class="tag">#GPT5</span>
+          <span class="tag">#AGI</span>
+        </div>
+        <div class="card-title">
+          샘 알트만 "GPT-5, 우리 역사상 가장 강력…
+          이건 시작일 뿐"
+        </div>
+        <div class="card-summary">
+          GPT-5 공개 직후 CEO의 첫 공식 반응.
+          멀티모달 추론 성능이 이전 버전 대비 크게 향상됐고,
+          추론 비용도 절반 이하로 줄었다고 밝혔다.
+        </div>
+      </div>
+      <div class="card-footer">
+        <a href="#" class="card-read-more">전문 보기 →</a>
+        <span class="card-free-badge">FREE</span>
+      </div>
+    </div>
+
+    <!-- 카드 2 — 유튜브 발언 -->
+    <div class="sample-card">
+      <div class="card-header">
+        <div class="card-header__top">
+          <div class="avatar avatar--n">N</div>
+          <div class="avatar__info">
+            <div class="avatar__name">Jensen Huang</div>
+            <div class="avatar__handle">CEO, NVIDIA</div>
+          </div>
+          <div class="card-platform">YouTube</div>
+        </div>
+        <div class="card-quote">
+          "Blackwell Ultra가 AI 추론 비용을 25배 낮출 겁니다.
+          이제 모든 기업이 AI를 도입할 수 있어요."
+        </div>
+        <div class="card-quote-en">
+          "Blackwell Ultra will reduce AI inference costs by 25x.
+          Every company can now afford to run AI."
+        </div>
+        <div class="card-meta">
+          <span class="card-meta__time">2026.05.08 · GTC Keynote</span>
+          <span class="card-meta__source">출처 youtube.com/NVIDIA</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-tags">
+          <span class="tag">#NVIDIA</span>
+          <span class="tag">#Blackwell</span>
+          <span class="tag">#반도체</span>
+        </div>
+        <div class="card-title">
+          젠슨 황 "추론 비용 25배 절감" 선언 —
+          SK하이닉스 · 삼성 HBM에 미칠 영향은?
+        </div>
+        <div class="card-summary">
+          GTC 키노트 핵심 발언 전문 번역.
+          국내 HBM 공급사들의 수혜 가능성과
+          한국 AI 스타트업 비용 절감 시나리오 분석 포함.
+        </div>
+      </div>
+      <div class="card-footer">
+        <a href="#" class="card-read-more">전문 보기 →</a>
+        <span class="card-lock-badge">PRO 전용</span>
+      </div>
+    </div>
+
+    <!-- 카드 3 — X 트윗 -->
+    <div class="sample-card">
+      <div class="card-header">
+        <div class="card-header__top">
+          <div class="avatar avatar--m">Z</div>
+          <div class="avatar__info">
+            <div class="avatar__name">Mark Zuckerberg</div>
+            <div class="avatar__handle">@zuck · CEO, Meta</div>
+          </div>
+          <div class="card-platform">𝕏 POST</div>
+        </div>
+        <div class="card-quote">
+          "Llama 4 Scout는 GPT-4o를 주요 벤치마크에서
+          모두 추월했습니다. 오픈소스로 공개합니다."
+        </div>
+        <div class="card-quote-en">
+          "Llama 4 Scout outperforms GPT-4o on all key benchmarks.
+          Open-sourced."
+        </div>
+        <div class="card-meta">
+          <span class="card-meta__time">2026.05.07 · 23:11 KST</span>
+          <span class="card-meta__source">출처 x.com/zuck</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-tags">
+          <span class="tag">#Meta</span>
+          <span class="tag">#Llama4</span>
+          <span class="tag">#오픈소스</span>
+        </div>
+        <div class="card-title">
+          저커버그 "Llama 4, GPT-4o 추월" 공식 선언 —
+          오픈소스 AI 판도 바뀌나
+        </div>
+        <div class="card-summary">
+          메타의 오픈소스 전략이 OpenAI 유료 모델 시장에
+          직접 타격. 국내 스타트업들의 LLM 비용 절감 기회
+          분석 포함.
+        </div>
+      </div>
+      <div class="card-footer">
+        <a href="#" class="card-read-more">전문 보기 →</a>
+        <span class="card-lock-badge">PRO 전용</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PLANS -->
+<section class="plans">
+  <div class="wrap">
+    <div class="section-header">
+      <span class="section-header__label">구독 플랜</span>
+      <h2 class="section-header__title">지금 무료로<br>시작하세요</h2>
+      <p class="section-header__desc">
+        무료로 충분히 경험하고,<br>
+        더 깊이 읽고 싶을 때 업그레이드하세요.
+      </p>
+    </div>
+
+    <!-- 무료 -->
+    <div class="plan-card">
+      <div class="plan-badge plan-badge--free">✦ FREE</div>
+      <div class="plan-name">무료 플랜</div>
+      <div class="plan-price-row">
+        <span class="plan-price plan-price--free">0원</span>
+      </div>
+      <div class="plan-price-note">영원히 무료 · 신용카드 불필요</div>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li class="on"><span class="feat-icon">📬</span>주 1회 뉴스레터 (매주 월요일)</li>
+        <li class="on"><span class="feat-icon">📰</span>AI 뉴스 요약 3건</li>
+        <li class="on"><span class="feat-icon">🗣️</span>CEO 발언 번역 + 원문 출처</li>
+        <li class="off"><span class="feat-icon">🔒</span>전문 심층 분석</li>
+        <li class="off"><span class="feat-icon">🔒</span>주간 트렌드 리포트</li>
+        <li class="off"><span class="feat-icon">🔒</span>한국 주식 연계 분석</li>
+      </ul>
+      <button class="plan-btn plan-btn--free" onclick="subscribe('free')">
+        무료로 시작하기
+      </button>
+    </div>
+
+    <!-- 월 구독 -->
+    <div class="plan-card plan-card--featured">
+      <div class="plan-badge plan-badge--monthly">⚡ MONTHLY</div>
+      <div class="plan-name">월 구독</div>
+      <div class="plan-price-row">
+        <span class="plan-price plan-price--monthly">9,900</span>
+        <span class="plan-price-unit">원 / 월</span>
+      </div>
+      <div class="plan-price-note">첫 달 무료 · 다음 달부터 결제</div>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li class="on"><span class="feat-icon">📬</span>매일 뉴스레터 (월~금)</li>
+        <li class="on"><span class="feat-icon">📰</span>AI 뉴스 전건 전문 제공</li>
+        <li class="on"><span class="feat-icon">🗣️</span>CEO 발언 번역 + 원문 출처</li>
+        <li class="on"><span class="feat-icon">🔍</span>전문 심층 분석 포함</li>
+        <li class="on"><span class="feat-icon">📊</span>주간 트렌드 리포트</li>
+        <li class="off"><span class="feat-icon">🔒</span>한국 주식 연계 분석</li>
+      </ul>
+      <button class="plan-btn plan-btn--monthly" onclick="subscribe('monthly')">
+        첫 달 무료로 시작 →
+      </button>
+    </div>
+
+    <!-- 연간 구독 -->
+    <div class="plan-card plan-card--annual" style="overflow:hidden;">
+      <div class="save-ribbon">50% OFF</div>
+      <div class="plan-badge plan-badge--annual">🔥 ANNUAL · 베스트딜</div>
+      <div class="plan-name">연간 구독</div>
+      <div class="plan-price-row">
+        <span class="plan-price plan-price--annual">4,900</span>
+        <span class="plan-price-unit">원 / 월</span>
+      </div>
+      <div class="plan-price-note">
+        연 58,800원 일시결제 ·
+        <strong>월 구독 대비 50% 절약</strong>
+      </div>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li class="on"><span class="feat-icon">📬</span>매일 뉴스레터 (월~금)</li>
+        <li class="on"><span class="feat-icon">📰</span>AI 뉴스 전건 전문 제공</li>
+        <li class="on"><span class="feat-icon">🗣️</span>CEO 발언 번역 + 원문 출처</li>
+        <li class="on"><span class="feat-icon">🔍</span>전문 심층 분석 포함</li>
+        <li class="on"><span class="feat-icon">📊</span>주간 트렌드 리포트</li>
+        <li class="on"><span class="feat-icon">📈</span>한국 주식 연계 분석</li>
+      </ul>
+      <button class="plan-btn plan-btn--annual" onclick="subscribe('annual')">
+        연간 구독으로 50% 아끼기 →
+      </button>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FEATURES -->
+<section class="features">
+  <div class="wrap">
+    <div class="section-header">
+      <span class="section-header__label">왜 AI Signal인가</span>
+      <h2 class="section-header__title">정보 격차를<br>없애드립니다</h2>
+    </div>
+
+    <div class="feature-item">
+      <div class="feature-icon">⚡</div>
+      <div class="feature-text">
+        <div class="feature-title">매일 오전 8시 발행</div>
+        <div class="feature-desc">
+          전날 밤 ~ 당일 새벽 미국 AI 뉴스를 자동 수집해
+          출근 전에 받아볼 수 있도록 큐레이션합니다.
+        </div>
+      </div>
+    </div>
+
+    <div class="feature-item">
+      <div class="feature-icon">🎯</div>
+      <div class="feature-text">
+        <div class="feature-title">CEO 발언 직접 번역</div>
+        <div class="feature-desc">
+          X, 유튜브, 공식 발표의 CEO 발언을
+          원문 출처와 함께 정확하게 번역합니다.
+          왜곡 없이, 팩트 그대로.
+        </div>
+      </div>
+    </div>
+
+    <div class="feature-item">
+      <div class="feature-icon">🇰🇷</div>
+      <div class="feature-text">
+        <div class="feature-title">한국 맥락 연결</div>
+        <div class="feature-desc">
+          글로벌 AI 뉴스가 삼성, SK하이닉스,
+          카카오, 네이버에 미치는 영향까지
+          연결해서 분석해드립니다.
+        </div>
+      </div>
+    </div>
+
+    <div class="feature-item">
+      <div class="feature-icon">📱</div>
+      <div class="feature-text">
+        <div class="feature-title">SNS 즉시 공유 가능</div>
+        <div class="feature-desc">
+          카드뉴스 이미지 + Threads · 카카오
+          공유 문구가 함께 제공됩니다.
+          바로 내 피드에 올려보세요.
+        </div>
+      </div>
+    </div>
+
+    <div class="feature-item">
+      <div class="feature-icon">🔗</div>
+      <div class="feature-text">
+        <div class="feature-title">원문 출처 100% 표기</div>
+        <div class="feature-desc">
+          모든 콘텐츠에 원문 링크와 출처를
+          명시합니다. 더 깊이 읽고 싶을 때
+          바로 확인하세요.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CHANNEL B -->
+<section>
+  <div class="wrap" style="padding-top:56px;">
+    <div class="channel-b">
+      <span class="channel-b__flag">🇺🇸</span>
+      <div class="channel-b__title">Korea Tech Wire</div>
+      <div class="channel-b__desc">
+        한국의 AI · 반도체 · 주식 정보를
+        영어로 정리해 해외 구독자에게 전달합니다.<br><br>
+        재미교포, 외국인 투자자, 해외 한국 관심층을
+        위한 영문 뉴스레터.
+        월 $9 · 연 $49.
+      </div>
+      <button class="channel-b__btn" onclick="showChannelB()">
+        Subscribe in English →
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BOTTOM -->
+<section class="cta-bottom">
+  <div class="wrap">
+    <h2 class="cta-bottom__title">
+      지금 놓치고 있는<br>AI 인사이트가<br>있습니다
+    </h2>
+    <p class="cta-bottom__desc">
+      매일 아침 5분으로<br>
+      글로벌 AI 흐름을 한국어로 파악하세요.
+    </p>
+
+    <div class="subscribe-form" id="ctaForm" style="margin-bottom:10px;">
+      <input
+        class="subscribe-form__input"
+        type="email"
+        id="ctaEmail"
+        placeholder="이메일 주소 입력"
+        inputmode="email"
+        autocomplete="email"
+      >
+      <button class="subscribe-form__btn" onclick="subscribe('cta')">
+        무료로 시작 →
+      </button>
+    </div>
+    <div class="subscribe-success" id="ctaSuccess">
+      ✅ 구독 완료! 다음 발행일에 첫 번째 뉴스레터가 도착해요.
+    </div>
+    <p class="subscribe-fine">
+      Threads 팔로워 1만 · 대학 AI 강의 운영 · 카카오 AI 오픈채팅
+    </p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer__logo">AI/SIGNAL·KR © 2026</div>
+  <div class="footer__links">
+    <a href="#">소개</a>
+    <a href="#">개인정보처리방침</a>
+    <a href="#">수신거부</a>
+    <a href="#">Threads</a>
+  </div>
+  <div class="footer__copy">
+    더커뮤니티 운영 · Powered by Claude API
+  </div>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  /* ─── 토스트 ─── */
+  function showToast(msg, ms = 3200) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), ms);
+  }
+
+  /* ─── 구독 처리 ─── */
+  function subscribe(type) {
+    const map = {
+      hero: { email: 'heroEmail', form: 'heroForm', ok: 'heroSuccess' },
+      free: { email: 'heroEmail', form: 'heroForm', ok: 'heroSuccess' },
+      cta:  { email: 'ctaEmail',  form: 'ctaForm',  ok: 'ctaSuccess'  },
+    };
+
+    // 플랜별 즉시 알림
+    if (type === 'monthly') {
+      showToast('🚀 월 구독 — 첫 달 무료! 준비 중입니다. 무료 구독 먼저 시작해보세요.', 4000);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    if (type === 'annual') {
+      showToast('🔥 연간 구독 — 50% 할인! 준비 중입니다. 무료 구독 먼저 시작해보세요.', 4000);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    const ids = map[type] || map.hero;
+    const email = document.getElementById(ids.email).value.trim();
+
+    if (!email || !email.includes('@') || !email.includes('.')) {
+      showToast('📧 올바른 이메일 주소를 입력해주세요.');
+      return;
+    }
+
+    document.getElementById(ids.form).style.display = 'none';
+    document.getElementById(ids.ok).style.display = 'block';
+    showToast('🎉 구독해주셔서 감사합니다!');
+
+    // TODO: Stibee API 연동
+    // fetch('/api/subscribe', { method:'POST', body: JSON.stringify({email, plan: type}) })
+  }
+
+  function showChannelB() {
+    showToast('🇺🇸 Korea Tech Wire — 출시 준비 중입니다!', 3500);
+  }
+
+  /* ─── nav 스크롤 강조 ─── */
+  window.addEventListener('scroll', () => {
+    document.querySelector('.nav').style.boxShadow =
+      window.scrollY > 40 ? '0 1px 24px rgba(0,0,0,0.5)' : 'none';
+  }, { passive: true });
+</script>
+</body>
+</html>
