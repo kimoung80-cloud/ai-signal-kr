@@ -1547,8 +1547,14 @@ section {
     document.getElementById(ids.ok).style.display = 'block';
     showToast('🎉 구독해주셔서 감사합니다!');
 
-    // TODO: Stibee API 연동
-    // fetch('/api/subscribe', { method:'POST', body: JSON.stringify({email, plan: type}) })
+    // Google Sheets 저장
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzd714XuUj6auW4D1JsAE42MTi7TVwERoB4fAj32uSa8CWKzTmJNv6rwq6jc5rVCM1jPA/exec';
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email, source: type })
+    }).catch(() => {});
   }
 
   function showChannelB() {
